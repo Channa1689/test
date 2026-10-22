@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: channa-portfolio
+    runtime: node
+    plan: starter
+    region: singapore
+    buildCommand: npm ci && npm run typecheck && npm run lint && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: channa-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /var/data/channa.sqlite
+      - key: UPLOADS_DIRECTORY
+        value: /var/data/uploads
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
